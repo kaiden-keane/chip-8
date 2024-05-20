@@ -28,3 +28,6 @@ struct chip8 {
 
     
 } chip8;
+
+int read_rom(char *filename, int mem_location);
+unsigned short fetch_instruction();
