@@ -20,18 +20,21 @@
 #ifndef CHIP8_H
 #define CHIP8_H
 
-struct chip8 {
-    char mem[4016];
-    char registers[16];
+struct Chip8 {
+    char *mem;
+    char *registers;
     unsigned short i; // index register
     unsigned short pc; // program counter
     char delay_timer;
-    char sound_timer;
+    char sound_timer;   
+};
 
-    
-} chip8;
 
-void read_rom(char *filename, int mem_location);
-unsigned short fetch_instruction();
+struct Chip8 *initialize_chip(); // initializes chip8
+void load_fonts(struct Chip8 *chip, int address); //loads fonts into memory
 
+void read_rom(struct Chip8 *chip8, char *filename, int mem_location); // reads rom into memory
+
+unsigned short fetch_instruction(struct Chip8 *chip); // fetches next instruciton
+void execute_instruction(struct Chip8 *chip); // executes instruction (from fetch_instruction)
 #endif
