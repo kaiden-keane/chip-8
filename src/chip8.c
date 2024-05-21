@@ -1,17 +1,15 @@
 #include "stdio.h"
 #include "chip8.h"
 
-int read_rom(char *filename, int mem_location) {
+void read_rom(char *filename, int mem_location) {
     FILE *fp = fopen(filename, "rb");
     char c;
     int current_location = mem_location;
-    while(c = fgetc(fp)) {
+    while( (c = fgetc(fp)) ) {
         if (c != EOF) {
-            return 0;
+            return;
         }
         else chip8.mem[current_location] = c;
-
-
     }
 }
 

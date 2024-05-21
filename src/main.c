@@ -1,7 +1,10 @@
 #include "chip8.h"
 #include "raylib.h"
 #include "graphics.h"
+
+#ifdef UNIX_BUILD
 #include <unistd.h>
+#endif
 
 
 int main(int argc, char *argv[]) {
@@ -12,7 +15,7 @@ int main(int argc, char *argv[]) {
     InitWindow(SCREEN_WIDTH * SCREEN_SCALE + 2*SCREEN_SCALE, SCREEN_HEIGHT * SCREEN_SCALE + 2*SCREEN_SCALE, "CHIP-8");
     RenderTexture2D screen = LoadRenderTexture(SCREEN_WIDTH*SCREEN_SCALE, SCREEN_HEIGHT*SCREEN_SCALE);
 
-    char screen_matrix[SCREEN_HEIGHT][SCREEN_WIDTH] = { 0 };
+    // char screen_matrix[SCREEN_HEIGHT][SCREEN_WIDTH] = { 0 };
     unsigned short instruction;
     while ( 1 ) {
         instruction = fetch_instruction();

@@ -17,6 +17,8 @@
 0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 */
 
+#ifndef CHIP8_H
+#define CHIP8_H
 
 struct chip8 {
     char mem[4016];
@@ -29,5 +31,7 @@ struct chip8 {
     
 } chip8;
 
-int read_rom(char *filename, int mem_location);
+void read_rom(char *filename, int mem_location);
 unsigned short fetch_instruction();
+
+#endif
