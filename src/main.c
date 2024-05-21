@@ -14,19 +14,17 @@ int main(int argc, char *argv[]) {
 
     InitWindow(SCREEN_WIDTH * SCREEN_SCALE + 2*SCREEN_SCALE, SCREEN_HEIGHT * SCREEN_SCALE + 2*SCREEN_SCALE, "CHIP-8");
     RenderTexture2D screen = LoadRenderTexture(SCREEN_WIDTH*SCREEN_SCALE, SCREEN_HEIGHT*SCREEN_SCALE);
+    BeginDrawing();
+    ClearBackground(BLACK);
+    EndDrawing();
 
-    // char screen_matrix[SCREEN_HEIGHT][SCREEN_WIDTH] = { 0 };
-    while ( 1 ) {
+    while ( !WindowShouldClose() ) {
         execute_instruction(chip8);
-
-        }
         
 
-        BeginDrawing();
-        ClearBackground(BLACK);
-        DrawTextureRec(screen.texture, (Rectangle) { 0, 0, (float)screen.texture.width, (float)-screen.texture.height }, (Vector2) { 0, 0 }, WHITE);
-        EndDrawing();
+        render_screen(&screen);
         usleep(100000);
+        }
 
     return 0;
 }

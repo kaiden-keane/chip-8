@@ -8,7 +8,7 @@
 #define SCREEN_SCALE 16
 
 void draw_pixel(RenderTexture2D *texture, int x, int y);
-void render_screen(RenderTexture2D *texture, char *screen_matrix);
+void render_screen(RenderTexture2D *texture);
 
 
 #endif
