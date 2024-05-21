@@ -4,7 +4,8 @@
 
 
 struct Chip8 *initialize_chip() {
-    struct Chip8 *chip = malloc(sizeof(struct Chip8));
+    // struct Chip8 *chip = malloc(sizeof(struct Chip8));
+    struct Chip8 *chip = calloc(1, sizeof(struct Chip8));
     chip->mem = malloc(sizeof(char) * 4096);
     chip->registers = malloc(sizeof(char) * 16);
     
@@ -27,7 +28,6 @@ void de_initialize_chip(struct Chip8 *chip) {
 }
 
 void load_fonts(struct Chip8 *chip, int address) {
-    
     char fonts[] = {
     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
     0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -54,13 +54,14 @@ void load_fonts(struct Chip8 *chip, int address) {
 
 void read_rom(struct Chip8 *chip8, char *filename, int mem_location) {
     FILE *fp = fopen(filename, "rb");
+    if (fp == NULL) {
+        printf("error reading rom\n");
+        return;
+    }
     char c;
-    int current_location = mem_location;
-    while( (c = fgetc(fp)) ) {
-        if (c != EOF) {
-            return;
-        }
-        else chip8->mem[current_location] = c;
+    while( 1 == fread(&c, sizeof(char), 1, fp) ) {
+        // printf("%x ", (unsigned char) c);
+        chip8->mem[mem_location++] = c;
     }
 }
 

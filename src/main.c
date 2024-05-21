@@ -7,11 +7,15 @@
 #include <unistd.h>
 #endif
 
+#include "debug.h"
+
 int main(int argc, char *argv[]) {
+    // initialize chip
     struct Chip8 *chip8 = initialize_chip();
     read_rom(chip8, "roms/IBM Logo.ch8", 500);
 
 
+    // initialize window
     InitWindow(SCREEN_WIDTH * SCREEN_SCALE + 2*SCREEN_SCALE, SCREEN_HEIGHT * SCREEN_SCALE + 2*SCREEN_SCALE, "CHIP-8");
     RenderTexture2D screen = LoadRenderTexture(SCREEN_WIDTH*SCREEN_SCALE, SCREEN_HEIGHT*SCREEN_SCALE);
     BeginDrawing();
