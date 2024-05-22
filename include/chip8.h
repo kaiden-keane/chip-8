@@ -1,4 +1,4 @@
-/*
+/*starts at 0x050
 0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
 0x20, 0x60, 0x20, 0x20, 0x70, // 1
 0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
@@ -20,13 +20,21 @@
 #ifndef CHIP8_H
 #define CHIP8_H
 
+#include "raylib.h"
+
+#define ENTRY_POINT 0x200
+#define FONT_LOCATION 0x050
+
+
 struct Chip8 {
-    char *mem;
-    char *registers;
+    unsigned char *mem;
+    unsigned char *registers;
     unsigned short i; // index register
     unsigned short pc; // program counter
-    char delay_timer;
-    char sound_timer;   
+    unsigned char delay_timer;
+    unsigned char sound_timer;   
+    RenderTexture2D screen;
+    unsigned char display[32][64];
 };
 
 
@@ -35,6 +43,6 @@ void load_fonts(struct Chip8 *chip, int address); //loads fonts into memory
 
 void read_rom(struct Chip8 *chip8, char *filename, int mem_location); // reads rom into memory
 
-unsigned short fetch_instruction(struct Chip8 *chip); // fetches next instruciton
+unsigned short fetch_instruction(struct Chip8 *chip, unsigned short mem_location); // fetches next instruciton
 void execute_instruction(struct Chip8 *chip); // executes instruction (from fetch_instruction)
 #endif
