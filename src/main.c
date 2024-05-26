@@ -1,10 +1,9 @@
 #include "chip8.h"
 #include "raylib.h"
 #include "graphics.h"
+#include "utils.h"
+
 #include <stdlib.h>
-
-#include "sleep.h"
-
 #include "debug.h"
 
 int main(int argc, char *argv[]) {
@@ -21,7 +20,7 @@ int main(int argc, char *argv[]) {
     clear_screen(&chip8->screen); // just to make sure it goes up properly
     
     render_screen(&chip8->screen);
-    sleep(1000000);
+    sleep(1);
     print_registers(chip8);
 
     while ( !WindowShouldClose() ) {
@@ -31,7 +30,7 @@ int main(int argc, char *argv[]) {
         printf("\n");
         
 
-        sleep(500000);
+        sleep(0.5);
         draw_display(chip8);
     }
     printf("\n");
