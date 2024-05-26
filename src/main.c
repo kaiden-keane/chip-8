@@ -3,9 +3,7 @@
 #include "graphics.h"
 #include <stdlib.h>
 
-#ifdef UNIX_BUILD
-#include <unistd.h>
-#endif
+#include "sleep.h"
 
 #include "debug.h"
 
@@ -23,7 +21,7 @@ int main(int argc, char *argv[]) {
     clear_screen(&chip8->screen); // just to make sure it goes up properly
     
     render_screen(&chip8->screen);
-    usleep(1000000);
+    sleep(1000000);
     print_registers(chip8);
 
     while ( !WindowShouldClose() ) {
@@ -33,7 +31,7 @@ int main(int argc, char *argv[]) {
         printf("\n");
         
 
-        usleep(500000);
+        sleep(500000);
         draw_display(chip8);
     }
     printf("\n");

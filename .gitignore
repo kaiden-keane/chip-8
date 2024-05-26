@@ -3,3 +3,5 @@ roms
 .vscode
 build/*
 !build/build.sh
+!build/build.bat
+shell.bat
