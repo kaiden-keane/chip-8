@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     clear_screen(&chip8->screen); // just to make sure it goes up properly
     
     render_screen(&chip8->screen);
-    sleep(1);
+    univ_sleep(1);
     print_registers(chip8);
 
     while ( !WindowShouldClose() ) {
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
         printf("\n");
         
 
-        sleep(0.5);
+        univ_sleep(0.5);
         draw_display(chip8);
     }
     printf("\n");

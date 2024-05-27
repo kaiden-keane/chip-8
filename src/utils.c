@@ -6,7 +6,7 @@
 #include <windows.h>
 #endif
 
-void sleep(double seconds) {
+void univ_sleep(double seconds) {
     #ifdef UNIX_BUILD
     usleep(seconds * 1e6);
     #elif WINDOWS_BUILD
