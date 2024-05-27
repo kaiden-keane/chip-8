@@ -87,7 +87,23 @@ void execute_instruction(struct Chip8 *chip) {
         case 0x1: // jump (set pc to nnn)
             chip->pc = instruction & 0xFFF;
         break;
-
+        
+        case 0x2: // 
+            
+        break;
+        
+        case 0x3: // 
+            
+        break;
+        
+        case 0x4: // 
+            
+        break;
+        
+        case 0x5: // 
+            
+        break;
+        
         case 0x6: // set registers
             chip->registers[(instruction >> 8) & 0xF] = instruction & 0xFF;
         break;
@@ -96,13 +112,39 @@ void execute_instruction(struct Chip8 *chip) {
             chip->registers[(instruction >> 8) & 0xF] += instruction & 0xFF;
         break;
 
+        case 0x8: // 
+            
+        break;
+        
+        case 0x9: // 
+            
+        break;
+        
+
         case 0xA: // set index
             chip->i = instruction & 0xFFF;
         break;
 
+        case 0xB: // 
+            
+        break;
+        
+        case 0xC: // 
+            
+        break;
+        
         case 0xD: // display
             draw_sprite(chip, instruction);
             draw_display(chip);
         break;
+
+        case 0xE: // 
+            
+        break;
+        
+        case 0xF: // 
+            
+        break;
+        
     }
 }

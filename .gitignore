@@ -11,3 +11,6 @@ build/*
 # windows building
 !build/build.bat
 !build/run.bat
+
+# want to include roms
+!build/roms
