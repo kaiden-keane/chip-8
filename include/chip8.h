@@ -39,6 +39,7 @@ struct Chip8 {
 
 
 struct Chip8 *initialize_chip(); // initializes chip8
+void deinitialize_chip(struct Chip8 *chip);
 void load_fonts(struct Chip8 *chip, int address); //loads fonts into memory
 
 void read_rom(struct Chip8 *chip8, char *filename, int mem_location); // reads rom into memory

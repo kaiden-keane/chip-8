@@ -7,32 +7,29 @@
 #include "debug.h"
 
 int main(int argc, char *argv[]) {
+    
+    if (argc != 2) {
+        printf("plz supply a filename lol\n");
+        return 1;
+    }
+    
     // initialize chip
     struct Chip8 *chip8 = initialize_chip();
-    read_rom(chip8, "roms/IBM Logo.ch8", ENTRY_POINT);
+    read_rom(chip8, argv[1], ENTRY_POINT);
     load_fonts(chip8, FONT_LOCATION);
     chip8->pc = ENTRY_POINT;
-    print_memory(chip8);
 
     // initialize window
     InitWindow(SCREEN_WIDTH * SCREEN_SCALE + 2*SCREEN_SCALE, SCREEN_HEIGHT * SCREEN_SCALE + 2*SCREEN_SCALE, "CHIP-8");
     chip8->screen = LoadRenderTexture(SCREEN_WIDTH*SCREEN_SCALE, SCREEN_HEIGHT*SCREEN_SCALE);
-    clear_screen(&chip8->screen); // just to make sure it goes up properly
-    
-    render_screen(&chip8->screen);
-    univ_sleep(1);
-    print_registers(chip8);
 
     while ( !WindowShouldClose() ) {
         execute_instruction(chip8);
-        print_registers(chip8);
-        printf("index: %d", chip8->i);
-        printf("\n");
         
-
-        univ_sleep(0.5);
         draw_display(chip8);
     }
-    printf("\n");
+
+    deinitialize_chip(chip8);
+    
     return 0;
 }
