@@ -1,7 +1,13 @@
+# yk what these r
 .DS_Store
-roms
 .vscode
-build/*
-!build/build.sh
-!build/build.bat
 shell.bat
+
+# don't need all excess files in build
+build/*
+#mac building
+!build/build.sh
+!build/run.sh
+# windows building
+!build/build.bat
+!build/run.bat
