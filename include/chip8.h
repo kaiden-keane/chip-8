@@ -35,6 +35,10 @@ struct Chip8 {
     unsigned char sound_timer;   
     RenderTexture2D screen;
     unsigned char display[32][64];
+
+    // stack
+    unsigned short stack[16];
+    unsigned char sp; // stack pointer
 };
 
 

@@ -17,6 +17,8 @@ struct Chip8 *initialize_chip() {
     
     chip->i = 0; // not needed just might aswell
 
+    chip->sp = 0;
+
     return chip;
 }
 
@@ -78,9 +80,13 @@ void execute_instruction(struct Chip8 *chip) {
     
     switch (nibble) {
         case 0x0: // clear screen
-            if ( (instruction & 0xFF) == 0xE0) { // clear screen
+            if ((instruction & 0xFF) == 0xE0) { // clear screen
                 clear_screen(&chip->screen);
                 render_screen(&chip->screen);
+            }
+            else if ((instruction & 0xFF) == 0xEE) {
+                chip->pc = chip->stack[chip->sp];
+                chip->sp -= 1;
             }
         break;
 
@@ -88,48 +94,118 @@ void execute_instruction(struct Chip8 *chip) {
             chip->pc = instruction & 0xFFF;
         break;
         
-        case 0x2: // 
-            
+        case 0x2: // call
+            chip->sp += 1;
+            chip->stack[chip->sp - 1] = chip->pc; // to account for += 1
+            chip->pc = instruction & 0xFFF; 
         break;
         
-        case 0x3: // 
-            
+        case 0x3: // skip if Vx = kk
+            if (chip->registers[(instruction >> 8) & 0xF] == (instruction & 0xF)) {
+                chip->pc += 2;
+            }
         break;
         
-        case 0x4: // 
-            
+        case 0x4: // skip if not equal
+            if (chip->registers[(instruction >> 8) & 0xF] != (instruction & 0xF)) {
+                chip->pc += 2;
+            }
         break;
         
-        case 0x5: // 
-            
+        case 0x5: // skip if Vx = Vy
+            if (chip->registers[(instruction >> 8) & 0xF] == chip->registers[(instruction >> 4) & 0xF]) {
+                chip->pc += 2;
+            }
         break;
         
         case 0x6: // set registers
-            chip->registers[(instruction >> 8) & 0xF] = instruction & 0xFF;
+            chip->registers[(instruction >> 8) & 0xF] = (instruction & 0xFF);
         break;
 
         case 0x7: // add registers
-            chip->registers[(instruction >> 8) & 0xF] += instruction & 0xFF;
+            chip->registers[(instruction >> 8) & 0xF] += (instruction & 0xFF);
         break;
 
-        case 0x8: // 
-            
+        case 0x8: 
+            switch (instruction & 0xF) {
+                case 0: // set Vx = Vy (8xy0)
+                    chip->registers[(instruction >> 8) & 0xF] = chip->registers[(instruction >> 4) & 0xF];
+                break;
+
+                case 1: // bitwise OR
+                    chip->registers[(instruction >> 8) & 0xF] = chip->registers[(instruction >> 8) & 0xF] | chip->registers[(instruction >> 4) & 0xF];
+                break;
+
+                case 2: // bitwise AND
+                    chip->registers[(instruction >> 8) & 0xF] = chip->registers[(instruction >> 8) & 0xF] & chip->registers[(instruction >> 4) & 0xF];
+                break;
+
+                case 3: // bitwise XOR
+                    chip->registers[(instruction >> 8) & 0xF] = chip->registers[(instruction >> 8) & 0xF] ^ chip->registers[(instruction >> 4) & 0xF];
+                break;
+
+                case 4: // addition
+                    chip->registers[0xF] = 0;
+                    unsigned int result = chip->registers[(instruction >> 8) & 0xF] + chip->registers[(instruction >> 4) & 0xF];
+                    if (result > 255) {
+                        chip->registers[0xF] = 1;
+                    }
+                    chip->registers[(instruction >> 8) & 0xF] = result;
+                break;
+
+                case 5: // subtraction
+                    if (chip->registers[(instruction >> 8) & 0xF] > chip->registers[(instruction >> 4) & 0xF]) {
+                        chip->registers[0xF] = 1;
+                    } else {
+                        chip->registers[0xF] = 0;
+                    }
+                    chip->registers[(instruction >> 8) & 0xF] = chip->registers[(instruction >> 8) & 0xF] - chip->registers[(instruction >> 4) & 0xF];
+                break;
+
+                case 6:
+                    if ((instruction & 0xF) == 1) {
+                        chip->registers[0xF] = 1;
+                    } else {
+                        chip->registers[0xF] = 0;
+                    }
+                    chip->registers[(instruction >> 8) & 0xF] /= 2; // equivalent to x >> 1
+                break;
+
+                case 7:
+                    if (chip->registers[(instruction >> 8) & 0xF] < chip->registers[(instruction >> 4) & 0xF]) {
+                        chip->registers[0xF] = 1;
+                    } else {
+                        chip->registers[0xF] = 0;
+                    }
+                    chip->registers[(instruction >> 8) & 0xF] = chip->registers[(instruction >> 4) & 0xF] - chip->registers[(instruction >> 8) & 0xF];
+                break;
+
+                case 0xE:
+                   if ((chip->registers[(instruction >> 8) & 0xF] & (~0xFFF)) != 0) {
+                        chip->registers[0xF] = 1;
+                    } else {
+                        chip->registers[0xF] = 0;
+                    }
+                    chip->registers[(instruction >> 8) & 0xF] *= 2; // equivalent to x << 1
+                break;
+            }
         break;
         
-        case 0x9: // 
-            
+        case 0x9: // skip if x != y
+            if (chip->registers[(instruction >> 8) & 0xF] != chip->registers[(instruction >> 4) & 0xF]) {
+                chip->pc += 2;
+            }
         break;
-        
 
         case 0xA: // set index
-            chip->i = instruction & 0xFFF;
+            chip->i = (instruction & 0xFFF);
         break;
 
-        case 0xB: // 
-            
+        case 0xB: // another jump
+            chip->pc = (instruction & 0xFFF) + chip->registers[0];
         break;
         
-        case 0xC: // 
+        case 0xC: // Vx = random number from 0 to 255 AND kk
             
         break;
         
