@@ -1,3 +1,1 @@
-pushd out
-. ./chip-8.exe
-popd
+chip-8.exe "roms\IBM Logo.ch8"

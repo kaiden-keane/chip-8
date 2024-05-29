@@ -21,6 +21,7 @@
 #define CHIP8_H
 
 #include "raylib.h"
+#include "graphics.h"
 
 #define ENTRY_POINT 0x200
 #define FONT_LOCATION 0x050
@@ -32,9 +33,9 @@ struct Chip8 {
     unsigned short i; // index register
     unsigned short pc; // program counter
     unsigned char delay_timer;
-    unsigned char sound_timer;   
-    RenderTexture2D screen;
-    unsigned char display[32][64];
+    unsigned char sound_timer;
+
+    struct Screen *screen;
 
     // stack
     unsigned short stack[16];

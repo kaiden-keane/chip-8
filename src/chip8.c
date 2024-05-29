@@ -9,8 +9,6 @@ struct Chip8 *initialize_chip() {
     struct Chip8 *chip = calloc(1, sizeof(struct Chip8));
     chip->mem = calloc(4096, sizeof(char));
     chip->registers = malloc(sizeof(char) * 16);
-
-    memset(chip->display, 0, sizeof(chip->display));
     
     chip->delay_timer = 0;
     chip->sound_timer = 0;
@@ -18,6 +16,7 @@ struct Chip8 *initialize_chip() {
     chip->i = 0; // not needed just might aswell
 
     chip->sp = 0;
+    chip->pc = ENTRY_POINT;
 
     return chip;
 }
@@ -81,8 +80,8 @@ void execute_instruction(struct Chip8 *chip) {
     switch (nibble) {
         case 0x0: // clear screen
             if ((instruction & 0xFF) == 0xE0) { // clear screen
-                clear_screen(&chip->screen);
-                render_screen(&chip->screen);
+                clear_screen(&chip->screen->texture);
+                render_screen(chip->screen);
             }
             else if ((instruction & 0xFF) == 0xEE) {
                 chip->pc = chip->stack[chip->sp];
@@ -211,7 +210,7 @@ void execute_instruction(struct Chip8 *chip) {
         
         case 0xD: // display
             draw_sprite(chip, instruction);
-            draw_display(chip);
+            draw_display(chip->screen);
         break;
 
         case 0xE: // 

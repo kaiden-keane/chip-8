@@ -17,7 +17,7 @@ cl /Zi /EHsc /Fe%name%.exe !src! %flags% %other%
 
 
 rem cleanup
-@REM move %name%.exe ../
+move %name%.exe ../
 
 popd
 

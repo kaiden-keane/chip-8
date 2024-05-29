@@ -3,33 +3,28 @@
 #include "graphics.h"
 #include "utils.h"
 
-#include <stdlib.h>
-#include "debug.h"
-
 int main(int argc, char *argv[]) {
-    
+    printf("%s", argv[1]);
     if (argc != 2) {
         printf("plz supply a filename lol\n");
         return 1;
     }
     
     // initialize chip
-    struct Chip8 *chip8 = initialize_chip();
-    read_rom(chip8, argv[1], ENTRY_POINT);
-    load_fonts(chip8, FONT_LOCATION);
-    chip8->pc = ENTRY_POINT;
+    struct Chip8 *chip = initialize_chip();
+    read_rom(chip, argv[1], ENTRY_POINT);
+    load_fonts(chip, FONT_LOCATION);
 
     // initialize window
-    InitWindow(SCREEN_WIDTH * SCREEN_SCALE + 2*SCREEN_SCALE, SCREEN_HEIGHT * SCREEN_SCALE + 2*SCREEN_SCALE, "CHIP-8");
-    chip8->screen = LoadRenderTexture(SCREEN_WIDTH*SCREEN_SCALE, SCREEN_HEIGHT*SCREEN_SCALE);
+    struct Screen *screen = init_screen(chip);
 
     while ( !WindowShouldClose() ) {
-        execute_instruction(chip8);
+        execute_instruction(chip);
         
-        draw_display(chip8);
+        draw_display(screen);
     }
 
-    deinitialize_chip(chip8);
+    deinitialize_chip(chip);
     
     return 0;
 }

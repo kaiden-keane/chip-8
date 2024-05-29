@@ -1,5 +1,28 @@
 #include "graphics.h"
+#include <stdlib.h>
+#include <string.h> // for memset
+
 #include "debug.h"
+
+
+
+struct Screen *init_screen(struct Chip8 *chip) {
+    struct Screen *screen = malloc (sizeof(struct Screen));
+
+    screen->height = 32;
+    screen->width = 64;
+    screen->scale = 16;
+    
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    InitWindow(screen->scale * (screen->width + 2), screen->scale * (screen->height + 2), "CHIP-8");
+    screen->texture = LoadRenderTexture(screen->width * screen->scale, screen->height * screen->scale);
+
+    memset(screen->display, 0, sizeof(screen->display));
+
+    chip->screen = screen;
+
+    return screen;
+}
 
 void draw_sprite(struct Chip8 *chip, unsigned short instruction) {
     unsigned char x = chip->registers[(instruction >> 8) & 0xF] % 64;
@@ -17,33 +40,33 @@ void draw_sprite(struct Chip8 *chip, unsigned short instruction) {
             // if bit is 1
             if ( ((val >> (7 - j)) & 0b1) == 1 ) {
                 // if display (x, y) is 1
-                if ( chip->display[y+i][x+j] == 1 ) {
+                if ( chip->screen->display[y+i][x+j] == 1 ) {
                     chip->registers[0xF] = 1;
-                    chip->display[y+i][x+j] = 0;
+                    chip->screen->display[y+i][x+j] = 0;
                 } else {
-                    chip->display[y+i][x+j] = 1;
+                    chip->screen->display[y+i][x+j] = 1;
                 }
             }
         }
     }
 }
 
-void draw_display(struct Chip8 *chip) {
-    clear_screen(&chip->screen);
+void draw_display(struct Screen *screen) {
+    clear_screen(&screen->texture);
     for (int i = 0; i < 32; i++) {
         for (int j = 0; j < 64; j++) {
-            if (chip->display[i][j] == 1) {
-                draw_pixel(&chip->screen, j, i);
+            if (screen->display[i][j] == 1) {
+                draw_pixel(screen, j, i);
             }
         }
     }
-    render_screen(&chip->screen);
+    render_screen(screen);
 }
 
 
-void draw_pixel(RenderTexture2D *texture, int x, int y) {
-    BeginTextureMode(*texture);
-    DrawRectangle(SCREEN_SCALE * x, SCREEN_SCALE * y, SCREEN_SCALE, SCREEN_SCALE, WHITE);
+void draw_pixel(struct Screen *screen, int x, int y) {
+    BeginTextureMode(screen->texture);
+    DrawRectangle(screen->scale * x, screen->scale * y, screen->scale, screen->scale, WHITE);
     EndTextureMode();
 }
 
@@ -55,8 +78,8 @@ void clear_screen(RenderTexture2D *texture) {
 }
 
 
-void render_screen(RenderTexture2D *texture) {
+void render_screen(struct Screen *screen) {
     BeginDrawing();
-    DrawTextureRec(texture->texture, (Rectangle) {0, 0, (float)texture->texture.width, (float)-texture->texture.height}, (Vector2) {SCREEN_SCALE, SCREEN_SCALE}, WHITE);
+    DrawTextureRec(screen->texture.texture, (Rectangle) {0, 0, (float)screen->texture.texture.width, (float)-screen->texture.texture.height}, (Vector2) {screen->scale, screen->scale}, WHITE);
     EndDrawing();
 }
