@@ -4,6 +4,7 @@
 #include "raylib.h"
 #include "chip8.h"
 
+struct Chip8; // so the functions know it exists
 
 struct Screen {
     int width;
