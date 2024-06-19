@@ -24,6 +24,7 @@ int main(int argc, char *argv[]) {
         execute_instruction(chip);
         
         draw_display(screen);
+        univ_sleep(0.0015);
     }
 
     deinitialize_chip(chip);

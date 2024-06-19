@@ -13,7 +13,7 @@ struct Screen *init_screen(struct Chip8 *chip) {
     screen->width = 64;
     screen->scale = 16;
     
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    // SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(screen->scale * (screen->width + 2), screen->scale * (screen->height + 2), "CHIP-8");
     screen->texture = LoadRenderTexture(screen->width * screen->scale, screen->height * screen->scale);
 
