@@ -1,2 +1,2 @@
 ./build.sh
-./CHIP-8 roms/1-chip8-logo.ch8
+./CHIP-8 roms/3-corax+.ch8

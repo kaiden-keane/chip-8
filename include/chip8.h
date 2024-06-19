@@ -49,6 +49,8 @@ void load_fonts(struct Chip8 *chip, int address); //loads fonts into memory
 
 void read_rom(struct Chip8 *chip8, char *filename, int mem_location); // reads rom into memory
 
+int validate_key(int key);
+
 unsigned short fetch_instruction(struct Chip8 *chip, unsigned short mem_location); // fetches next instruciton
 void execute_instruction(struct Chip8 *chip); // executes instruction (from fetch_instruction)
 #endif
