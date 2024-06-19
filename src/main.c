@@ -5,7 +5,7 @@
 
 #include "stdio.h"
 
-// CAN CURRENTLY CAN OVERFLOW REGISTERS
+#include "debug.h"
 
 int main(int argc, char *argv[]) {
     printf("%s", argv[1]);
@@ -23,6 +23,9 @@ int main(int argc, char *argv[]) {
     struct Screen *screen = init_screen(chip);
 
     while ( !WindowShouldClose() ) {
+        while (IsKeyPressed(KEY_BACKSLASH)) {
+            ;
+        }
         printf("pc:%d\n", chip->pc);
 
         printf("stack: ");
@@ -30,10 +33,14 @@ int main(int argc, char *argv[]) {
             printf("%d ", chip->stack[i]);
         }
         printf("  %d\n", chip->stack[chip->sp]);
+
+        printf("registers: ");
+        print_registers(chip);
+
         execute_instruction(chip);
         
         draw_display(screen);
-        univ_sleep(0.0015);
+        // univ_sleep(0.0015);
 
         
         if (chip->delay_timer >= 1) {

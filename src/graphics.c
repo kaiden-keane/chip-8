@@ -25,15 +25,15 @@ struct Screen *init_screen(struct Chip8 *chip) {
 }
 
 void draw_sprite(struct Chip8 *chip, unsigned short instruction) {
-    unsigned char x = chip->registers[(instruction >> 8) & 0xF] % 64;
-    unsigned char y = chip->registers[(instruction >> 4) & 0xF] % 32;
+    unsigned char x = chip->V[(instruction >> 8) & 0xF] % 64;
+    unsigned char y = chip->V[(instruction >> 4) & 0xF] % 32;
     unsigned char n = instruction & 0xF;
-    chip->registers[0xF] = 0;
+    chip->V[0xF] = 0;
 
     unsigned char val;
     // columns (n rows)
     for (int i = 0; i < n && y + i < 32; i++) {
-        val = chip->mem[chip->i + i];
+        val = chip->mem[chip->I + i];
 
         // rows (8 bits in char)
         for (int j = 0; j < 8 && x + j < 64; j++) {
@@ -41,7 +41,7 @@ void draw_sprite(struct Chip8 *chip, unsigned short instruction) {
             if ( ((val >> (7 - j)) & 0b1) == 1 ) {
                 // if display (x, y) is 1
                 if ( chip->screen->display[y+i][x+j] == 1 ) {
-                    chip->registers[0xF] = 1;
+                    chip->V[0xF] = 1;
                     chip->screen->display[y+i][x+j] = 0;
                 } else {
                     chip->screen->display[y+i][x+j] = 1;

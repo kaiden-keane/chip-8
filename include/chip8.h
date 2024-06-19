@@ -29,8 +29,8 @@
 
 struct Chip8 {
     unsigned char *mem;
-    unsigned char *registers;
-    unsigned short i; // index register
+    unsigned char *V;
+    unsigned short I; // index register
     unsigned short pc; // program counter
     unsigned char delay_timer;
     unsigned char sound_timer;

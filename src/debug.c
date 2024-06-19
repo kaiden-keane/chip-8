@@ -37,7 +37,7 @@ void print_instruction(unsigned short instruction) {
 
 void print_registers(struct Chip8 *chip) {
     for (int i = 0; i < 16; i++) {
-        printf("%d ", chip->registers[i]);
+        printf("%d ", chip->V[i]);
     }
     printf("\n");
 }
