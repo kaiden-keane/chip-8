@@ -6,9 +6,9 @@
 
 
 int key_mappings[16] = {KEY_ONE, KEY_TWO, KEY_THREE, KEY_FOUR,
-                    KEY_Q, KEY_W, KEY_E, KEY_R,
-                    KEY_A, KEY_S, KEY_D, KEY_F,
-                    KEY_Z, KEY_X, KEY_C, KEY_V};
+                        KEY_Q, KEY_W, KEY_E, KEY_R,
+                        KEY_A, KEY_S, KEY_D, KEY_F,
+                        KEY_Z, KEY_X, KEY_C, KEY_V};
 
 
 struct Chip8 *initialize_chip() {
@@ -237,39 +237,40 @@ void execute_instruction(struct Chip8 *chip) {
         
         case 0xF:
             switch (instruction & 0xFF) {
-                case 0x07:
+                case 0x07: // Set Vx = delay timer value.
                     
                     break;
                 
-                case 0x0A:
+                case 0x0A: // Wait for a key press, store the value of the key in Vx.
+                           // All execution stops until a key is pressed, then the value of that key is stored in Vx.
                     
                     break;
                 
-                case 0x15:
+                case 0x15: // Set delay timer = Vx.
                     
                     break;
                 
-                case 0x18:
+                case 0x18: // Set sound timer = Vx.
                     
                     break;
                 
-                case 0x1E:
+                case 0x1E: // Set I = I + Vx.
                     
                     break;
                 
-                case 0x29:
+                case 0x29: // Set I = location of sprite for digit Vx.
                     
                     break;
                 
-                case 0x33:
+                case 0x33: // Store BCD representation of Vx in memory locations I, I+1, and I+2.
                     
                     break;
                 
-                case 0x55:
+                case 0x55: // Store registers V0 through Vx in memory starting at location I.
                     
                     break;
                 
-                case 0x65:
+                case 0x65: // Read registers V0 through Vx from memory starting at location I.
                     
                     break;
             }
