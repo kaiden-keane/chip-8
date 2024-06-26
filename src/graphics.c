@@ -5,7 +5,9 @@
 #include "debug.h"
 
 
-
+/*
+initializes all values of the screen
+*/
 void init_screen(struct Chip8 *chip) {
     struct Screen *screen = malloc (sizeof(struct Screen));
 
@@ -22,6 +24,10 @@ void init_screen(struct Chip8 *chip) {
     chip->screen = screen;
 }
 
+
+/*
+draws sprite to the screen;
+*/
 void draw_sprite(struct Chip8 *chip, unsigned short instruction) {
     unsigned char x = chip->V[(instruction >> 8) & 0xF] % 64;
     unsigned char y = chip->V[(instruction >> 4) & 0xF] % 32;
@@ -49,25 +55,26 @@ void draw_sprite(struct Chip8 *chip, unsigned short instruction) {
     }
 }
 
+
+/*
+draws from display array to texture
+*/
 void draw_display(struct Screen *screen) {
-    clear_screen(&screen->texture);
+    BeginTextureMode(screen->texture);
     for (int i = 0; i < 32; i++) {
         for (int j = 0; j < 64; j++) {
             if (screen->display[i][j] == 1) {
-                draw_pixel(screen, j, i);
+                DrawRectangle(screen->scale * j, screen->scale * i, screen->scale, screen->scale, WHITE);
             }
         }
     }
-}
-
-
-void draw_pixel(struct Screen *screen, int x, int y) {
-    BeginTextureMode(screen->texture);
-    DrawRectangle(screen->scale * x, screen->scale * y, screen->scale, screen->scale, WHITE);
     EndTextureMode();
 }
 
 
+/*
+clears screen to be all black
+*/
 void clear_screen(RenderTexture2D *texture) {
     BeginTextureMode(*texture);
     ClearBackground(BLACK);
@@ -75,6 +82,9 @@ void clear_screen(RenderTexture2D *texture) {
 }
 
 
+/*
+renders screen texture
+*/
 void render_screen(struct Screen *screen) {
     BeginDrawing();
     DrawTextureRec(screen->texture.texture, (Rectangle) {0, 0, (float)screen->texture.texture.width, (float)-screen->texture.texture.height}, (Vector2) {screen->scale, screen->scale}, WHITE);

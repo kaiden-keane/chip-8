@@ -39,6 +39,7 @@ int main(int argc, char *argv[]) {
         render_screen(chip->screen);
     }
 
+    // free allocated memory
     deinitialize_chip(chip);
     
     return 0;

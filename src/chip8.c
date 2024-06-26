@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "chip8.h"
-#include "debug.h"
 #include "graphics.h"
-
-
 #include <string.h>
+
+#include "debug.h"
+
 
 int key_mappings[16] = {KEY_ONE, KEY_TWO, KEY_THREE, KEY_FOUR,
                         KEY_Q, KEY_W, KEY_E, KEY_R,
@@ -13,6 +13,9 @@ int key_mappings[16] = {KEY_ONE, KEY_TWO, KEY_THREE, KEY_FOUR,
                         KEY_Z, KEY_X, KEY_C, KEY_V};
 
 
+/*
+initializes all values of the chip
+*/
 struct Chip8 *initialize_chip() {
     struct Chip8 *chip = calloc(1, sizeof(struct Chip8));
     chip->mem = calloc(4096, sizeof(char));
@@ -30,12 +33,21 @@ struct Chip8 *initialize_chip() {
     return chip;
 }
 
+
+/*
+frees all allocated memory associated with the chip
+*/
 void deinitialize_chip(struct Chip8 *chip) {
     free(chip->V);
     free(chip->mem);
+    free(chip->screen);
     free(chip);
 }
 
+
+/*
+load the fonts into memory
+*/
 void load_fonts(struct Chip8 *chip, int address) {
     unsigned char fonts[] = {
     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -61,6 +73,9 @@ void load_fonts(struct Chip8 *chip, int address) {
 }
 
 
+/*
+read data from file into memory
+*/
 void read_rom(struct Chip8 *chip8, char *filename, int mem_location) {
     FILE *fp = fopen(filename, "rb");
     if (fp == NULL) {
@@ -72,6 +87,7 @@ void read_rom(struct Chip8 *chip8, char *filename, int mem_location) {
         chip8->mem[mem_location++] = c;
     }
 }
+
 
 /*
 checks if a key is in our key mappings, if so it returns its equivalent
@@ -86,20 +102,15 @@ int validate_key(int key) {
 }
 
 
-unsigned short fetch_instruction(struct Chip8 *chip, unsigned short mem_location) {
-    return (short)(((short)chip->mem[mem_location]) << 8) | chip->mem[mem_location + 1];
-}
-
-
+/*
+execute instruction instruction at pc
+*/
 void execute_instruction(struct Chip8 *chip) {
-    unsigned short instruction = fetch_instruction(chip, chip->pc);
-    printf("instruction:");
-    print_instruction(instruction);
-    chip->pc += 2;
-
-    unsigned char nibble = (instruction >> (16-4)) & 0xF;
+    unsigned short instruction = (short)(((short)chip->mem[chip->pc]) << 8) | chip->mem[chip->pc + 1];
     
-    switch (nibble) {
+    chip->pc += 2;
+    
+    switch ((instruction >> (16-4)) & 0xF) {
         case 0x0: // clear screen
             // 00E0
             if ((instruction & 0xFF) == 0xE0) { // clear screen
