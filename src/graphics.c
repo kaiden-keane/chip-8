@@ -6,7 +6,7 @@
 
 
 
-struct Screen *init_screen(struct Chip8 *chip) {
+void init_screen(struct Chip8 *chip) {
     struct Screen *screen = malloc (sizeof(struct Screen));
 
     screen->height = 32;
@@ -20,8 +20,6 @@ struct Screen *init_screen(struct Chip8 *chip) {
     memset(screen->display, 0, sizeof(screen->display));
 
     chip->screen = screen;
-
-    return screen;
 }
 
 void draw_sprite(struct Chip8 *chip, unsigned short instruction) {
@@ -60,7 +58,6 @@ void draw_display(struct Screen *screen) {
             }
         }
     }
-    render_screen(screen);
 }
 
 

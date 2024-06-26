@@ -20,29 +20,14 @@ int main(int argc, char *argv[]) {
     load_fonts(chip, FONT_LOCATION);
 
     // initialize window
-    struct Screen *screen = init_screen(chip);
+    init_screen(chip);
+
 
     while ( !WindowShouldClose() ) {
-        while (IsKeyPressed(KEY_BACKSLASH)) {
-            ;
-        }
-        printf("pc:%d\n", chip->pc);
-
-        printf("stack: ");
-        for (int i = 0; i < 16; i++) {
-            printf("%d ", chip->stack[i]);
-        }
-        printf("  %d\n", chip->stack[chip->sp]);
-
-        printf("registers: ");
-        print_registers(chip);
 
         execute_instruction(chip);
-        
-        draw_display(screen);
-        // univ_sleep(0.0015);
 
-        
+        // decrement timers
         if (chip->delay_timer >= 1) {
             chip->delay_timer -= 1;
         }
@@ -51,7 +36,7 @@ int main(int argc, char *argv[]) {
             chip->sound_timer -= 1;
         }
 
-        printf("\n");
+        render_screen(chip->screen);
     }
 
     deinitialize_chip(chip);

@@ -16,7 +16,7 @@ struct Screen {
     
 };
 
-struct Screen *init_screen(struct Chip8 *chip);
+void init_screen(struct Chip8 *chip);
 
 void draw_sprite(struct Chip8 *chip, unsigned short instruction);
 void draw_display(struct Screen *screen);
