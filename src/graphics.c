@@ -1,6 +1,9 @@
-#include "graphics.h"
 #include <stdlib.h>
 #include <string.h> // for memset
+
+#include "graphics.h"
+
+#include "chip8.h"
 
 #include "debug.h"
 

@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "chip8.h"
+#include <string.h> // for memset
+
+#include "raylib.h"
 #include "graphics.h"
-#include <string.h>
+
+#include "chip8.h"
 
 #include "debug.h"
 

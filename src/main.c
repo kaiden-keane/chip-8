@@ -1,11 +1,14 @@
-#include "chip8.h"
+#include <stdio.h>
+
 #include "raylib.h"
 #include "graphics.h"
+
+#include "chip8.h"
+
 #include "utils.h"
 
-#include "stdio.h"
-
 #include "debug.h"
+
 
 int main(int argc, char *argv[]) {
     printf("%s", argv[1]);
