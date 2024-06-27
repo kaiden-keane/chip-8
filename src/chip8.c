@@ -268,7 +268,7 @@ void execute_instruction(struct Chip8 *chip) {
         
         // Cxkk
         case 0xC: // Vx = random number from 0 to 255 AND kk
-            
+            chip->V[(instruction >> 8) & 0xF] = (unsigned char)(rand() % 256) & (unsigned char)(instruction & 0xFF);
             break;
         
         // Dxyn

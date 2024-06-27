@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
 
 #include "raylib.h"
 #include "graphics.h"
@@ -24,6 +26,8 @@ int main(int argc, char *argv[]) {
 
     // initialize window
     init_screen(chip);
+
+    srand(time(NULL));
 
 
     while ( !WindowShouldClose() ) {
