@@ -64,6 +64,7 @@ draws from display array to texture
 */
 void draw_display(struct Screen *screen) {
     BeginTextureMode(screen->texture);
+    ClearBackground(BLACK);
     for (int i = 0; i < 32; i++) {
         for (int j = 0; j < 64; j++) {
             if (screen->display[i][j] == 1) {
@@ -78,8 +79,13 @@ void draw_display(struct Screen *screen) {
 /*
 clears screen to be all black
 */
-void clear_screen(RenderTexture2D *texture) {
-    BeginTextureMode(*texture);
+void clear_screen(struct Chip8 *chip) {
+    for (int i = 0; i < chip->screen->height; i++) {
+        for (int j = 0; j < chip->screen->width; j++) {
+            chip->screen->display[i][j] = 0;
+        }
+    }
+    BeginTextureMode(chip->screen->texture);
     ClearBackground(BLACK);
     EndTextureMode();
 }
@@ -90,6 +96,7 @@ renders screen texture
 */
 void render_screen(struct Screen *screen) {
     BeginDrawing();
+    // ClearBackground(BLACK);
     DrawTextureRec(screen->texture.texture, (Rectangle) {0, 0, (float)screen->texture.texture.width, (float)-screen->texture.texture.height}, (Vector2) {screen->scale, screen->scale}, WHITE);
     EndDrawing();
 }

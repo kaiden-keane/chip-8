@@ -10,10 +10,10 @@
 #include "debug.h"
 
 
-int key_mappings[16] = {KEY_ONE, KEY_TWO, KEY_THREE, KEY_FOUR,
-                        KEY_Q, KEY_W, KEY_E, KEY_R,
-                        KEY_A, KEY_S, KEY_D, KEY_F,
-                        KEY_Z, KEY_X, KEY_C, KEY_V};
+int key_mappings[16] = {KEY_X, KEY_ONE, KEY_TWO, KEY_THREE,
+                        KEY_Q, KEY_W, KEY_E, KEY_A,
+                        KEY_S, KEY_D, KEY_Z, KEY_C,
+                        KEY_FOUR, KEY_R, KEY_F, KEY_V};
 
 
 /*
@@ -94,6 +94,7 @@ void read_rom(struct Chip8 *chip8, char *filename, int mem_location) {
 
 /*
 checks if a key is in our key mappings, if so it returns its equivalent
+if not found returns -1
 */
 int validate_key(int key) {
     for (int i = 0; i < 16; i++) {
@@ -101,7 +102,7 @@ int validate_key(int key) {
             return i;
         }
     }
-    return 0;
+    return -1; // if not found
 }
 
 
@@ -117,7 +118,7 @@ void execute_instruction(struct Chip8 *chip) {
         case 0x0: // clear screen
             // 00E0
             if ((instruction & 0xFF) == 0xE0) { // clear screen
-                clear_screen(&chip->screen->texture);
+                clear_screen(chip);
                 render_screen(chip->screen);
             }
             // 00EE
@@ -281,14 +282,14 @@ void execute_instruction(struct Chip8 *chip) {
             switch(instruction & 0xFF) {
                 // Ex9E
                 case 0x9E: // skip next instruction if v(x) = is pressed
-                    if (IsKeyPressed(key_mappings[chip->V[(instruction >> 8) & 0xF]])) {
+                    if (IsKeyDown(key_mappings[chip->V[(instruction >> 8) & 0xF]])) {
                         chip->pc += 2;
                     }
                     break;
                 
                 // ExA1
                 case 0xA1: // skip next instruction if v(x) = is NOT pressed
-                    if (!IsKeyPressed(key_mappings[chip->V[(instruction >> 8) & 0xF]])) {
+                    if (!IsKeyDown(key_mappings[chip->V[(instruction >> 8) & 0xF]])) {
                         chip->pc += 2;
                     }
                     break;
@@ -308,7 +309,7 @@ void execute_instruction(struct Chip8 *chip) {
                     ; // gets around expected expression
                     int key = GetKeyPressed();
                     int validated_key = validate_key(key); // ignore if not valid keystroke
-                    if (key != 0 && validated_key != 0) {
+                    if (key != 0 && validated_key != -1) {
                         chip->V[(instruction >> 8) & 0xF] = validated_key;
                     }
                     else {

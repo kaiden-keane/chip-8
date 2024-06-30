@@ -42,8 +42,10 @@ int main(int argc, char *argv[]) {
         if (chip->sound_timer >= 1) {
             chip->sound_timer -= 1;
         }
-
+        
         render_screen(chip->screen);
+
+        univ_sleep((float)1/512);
     }
 
     // free allocated memory
