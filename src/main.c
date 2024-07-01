@@ -45,7 +45,9 @@ int main(int argc, char *argv[]) {
         
         render_screen(chip->screen);
 
-        univ_sleep((float)1/512);
+
+        // mac = 1/512, windows = 1/256
+        univ_sleep((float)1/256);
     }
 
     // free allocated memory
