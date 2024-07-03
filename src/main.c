@@ -27,27 +27,28 @@ int main(int argc, char *argv[]) {
     // initialize window
     init_screen(chip);
 
-    srand(time(NULL));
+    srand(time(NULL)); // initialize for random
+    // print_memory(chip);
 
 
+    clock_t begin = clock();
+    clock_t end;
     while ( !WindowShouldClose() ) {
 
         execute_instruction(chip);
-
-        // decrement timers
-        if (chip->delay_timer >= 1) {
-            chip->delay_timer -= 1;
-        }
-
-        if (chip->sound_timer >= 1) {
-            chip->sound_timer -= 1;
-        }
         
         render_screen(chip->screen);
 
-
         // mac = 1/512, windows = 1/256
         univ_sleep((float)1/256);
+        
+        // update timers at about 60hz
+        end = clock();
+        printf("time: %f\n", ((double)(end - begin) / CLOCKS_PER_SEC));
+        if (((double)(end - begin) / CLOCKS_PER_SEC) >= (double)1 / 60) {
+            update_timers(chip);
+            begin = clock();
+        }
     }
 
     // free allocated memory

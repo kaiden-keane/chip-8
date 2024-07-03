@@ -28,6 +28,8 @@ void deinitialize_chip(struct Chip8 *chip); // frees allocated memory
 void load_fonts(struct Chip8 *chip, int address); //loads fonts into memory
 void read_rom(struct Chip8 *chip8, char *filename, int mem_location); // reads rom into memory
 
+void update_timers(struct Chip8 *chip);
+
 int validate_key(int key); // validates keyboard key
 
 unsigned short fetch_instruction(struct Chip8 *chip, unsigned short mem_location); // fetches next instruciton

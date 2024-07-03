@@ -91,6 +91,15 @@ void read_rom(struct Chip8 *chip8, char *filename, int mem_location) {
     }
 }
 
+void update_timers(struct Chip8 *chip) {
+    if (chip->delay_timer >= 1) {
+        chip->delay_timer -= 1;
+    }
+
+    if (chip->sound_timer >= 1) {
+        chip->sound_timer -= 1;
+    }
+}
 
 /*
 checks if a key is in our key mappings, if so it returns its equivalent
@@ -111,7 +120,7 @@ execute instruction instruction at pc
 */
 void execute_instruction(struct Chip8 *chip) {
     unsigned short instruction = (short)(((short)chip->mem[chip->pc]) << 8) | chip->mem[chip->pc + 1];
-    
+    print_instruction(instruction);
     chip->pc += 2;
     
     switch ((instruction >> (16-4)) & 0xF) {
