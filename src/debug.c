@@ -41,3 +41,10 @@ void print_registers(struct Chip8 *chip) {
     }
     printf("\n");
 }
+
+void print_keys(struct Chip8 *chip) {
+    for (int i = 0; i < 16; i++) {
+        printf("%d ", chip->key_status[i]);
+    }
+    printf("\n");
+}

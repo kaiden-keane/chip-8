@@ -1,1 +1,1 @@
-out\chip-8.exe "roms\5-quirks.ch8"
+out\chip-8.exe "roms\Space Invaders [David Winter].ch8"

@@ -19,6 +19,8 @@ struct Chip8 {
     // stack
     unsigned short stack[16];   // instruction stack
     unsigned char sp;           // stack pointer
+
+    unsigned char key_status[16]; // prob not the best but here for now
 };
 
 
@@ -29,6 +31,7 @@ void load_fonts(struct Chip8 *chip, int address); //loads fonts into memory
 void read_rom(struct Chip8 *chip8, char *filename, int mem_location); // reads rom into memory
 
 void update_timers(struct Chip8 *chip);
+void update_input(struct Chip8 *chip);
 
 int validate_key(int key); // validates keyboard key
 

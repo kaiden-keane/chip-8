@@ -114,13 +114,32 @@ int validate_key(int key) {
     return -1; // if not found
 }
 
+void update_input(struct Chip8 *chip) {    
+    if (IsKeyDown(KEY_X))    chip->key_status[0] = 1;  else chip->key_status[0] = 0;
+    if (IsKeyDown(KEY_ONE))  chip->key_status[1] = 1;  else chip->key_status[1] = 0;
+    if (IsKeyDown(KEY_TWO))  chip->key_status[2] = 1;  else chip->key_status[2] = 0;
+    if (IsKeyDown(KEY_THREE))chip->key_status[3] = 1;  else chip->key_status[3] = 0;
+    if (IsKeyDown(KEY_Q))    chip->key_status[4] = 1;  else chip->key_status[4] = 0;
+    if (IsKeyDown(KEY_W))    chip->key_status[5] = 1;  else chip->key_status[5] = 0;
+    if (IsKeyDown(KEY_E))    chip->key_status[6] = 1;  else chip->key_status[6] = 0;
+    if (IsKeyDown(KEY_A))    chip->key_status[7] = 1;  else chip->key_status[7] = 0;
+    if (IsKeyDown(KEY_S))    chip->key_status[8] = 1;  else chip->key_status[8] = 0;
+    if (IsKeyDown(KEY_D))    chip->key_status[9] = 1;  else chip->key_status[9] = 0;
+    if (IsKeyDown(KEY_Z))    chip->key_status[10] = 1; else chip->key_status[10] = 0;
+    if (IsKeyDown(KEY_C))    chip->key_status[11] = 1; else chip->key_status[11] = 0;
+    if (IsKeyDown(KEY_FOUR)) chip->key_status[12] = 1; else chip->key_status[12] = 0;
+    if (IsKeyDown(KEY_R))    chip->key_status[13] = 1; else chip->key_status[13] = 0;
+    if (IsKeyDown(KEY_F))    chip->key_status[14] = 1; else chip->key_status[14] = 0;
+    if (IsKeyDown(KEY_V))    chip->key_status[15] = 1; else chip->key_status[15] = 0; 
+}
+
 
 /*
 execute instruction instruction at pc
 */
 void execute_instruction(struct Chip8 *chip) {
     unsigned short instruction = (short)(((short)chip->mem[chip->pc]) << 8) | chip->mem[chip->pc + 1];
-    print_instruction(instruction);
+    // print_instruction(instruction);
     chip->pc += 2;
     
     switch ((instruction >> (16-4)) & 0xF) {
@@ -291,14 +310,14 @@ void execute_instruction(struct Chip8 *chip) {
             switch(instruction & 0xFF) {
                 // Ex9E
                 case 0x9E: // skip next instruction if v(x) = is pressed
-                    if (IsKeyDown(key_mappings[chip->V[(instruction >> 8) & 0xF]])) {
+                    if (chip->key_status[chip->V[(instruction >> 8) & 0xF]] == 1) {
                         chip->pc += 2;
                     }
                     break;
                 
                 // ExA1
                 case 0xA1: // skip next instruction if v(x) = is NOT pressed
-                    if (!IsKeyDown(key_mappings[chip->V[(instruction >> 8) & 0xF]])) {
+                    if (!chip->key_status[chip->V[(instruction >> 8) & 0xF]] == 1) {
                         chip->pc += 2;
                     }
                     break;
