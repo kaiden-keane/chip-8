@@ -317,7 +317,7 @@ void execute_instruction(struct Chip8 *chip) {
                 
                 // ExA1
                 case 0xA1: // skip next instruction if v(x) = is NOT pressed
-                    if (!chip->key_status[chip->V[(instruction >> 8) & 0xF]] == 1) {
+                    if (!(chip->key_status[chip->V[(instruction >> 8) & 0xF]] == 1)) {
                         chip->pc += 2;
                     }
                     break;
