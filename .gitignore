@@ -5,6 +5,7 @@ shell.bat
 
 # don't need all excess files in build
 build/*
+!build/obj/
 #mac building
 !build/build.sh
 !build/run.sh

@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
         render_screen(chip->screen);
         
         // mac = 1/512, windows = 1/256
-        univ_sleep((float)1/256);
+        // univ_sleep((float)1/256);
         
         // update timers at about 60hz
         end = clock();
